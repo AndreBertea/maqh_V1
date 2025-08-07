@@ -1,0 +1,22 @@
+# Build / deps
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Data : tout ignorer par défaut…
+data/
+
+# …sauf les échantillons et la doc
+!data/README.md
+!data/samples/
+!data/samples/**
+!data/notation/
+!data/notation/**
+
+# Fichiers volumineux connus
+data/stock_data_all.json
+data/EURONEXT_actions.csv
+data/PE_vs_PER_sec.csv
+data/PER_sec.json

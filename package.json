@@ -1,0 +1,43 @@
+{
+  "name": "maqh_v1",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.maqh_v1.app",
+    "productName": "maqh_v1",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "src/**/*",
+      "data/**/*",
+      "config/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "icon": "assets/maqh.ico"
+    },
+    "mac": {
+      "icon": "assets/maqh_512x512_512x512.icns"
+    },
+    "linux": {
+      "icon": "assets/maqh.png"
+    }
+  },
+  "dependencies": {
+    "@electron/remote": "^2.1.2",
+    "chart.js": "^4.4.8",
+    "csv-parser": "^3.2.0",
+    "firebase-admin": "^13.3.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^25.1.8"
+  }
+}

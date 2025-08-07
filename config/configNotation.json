@@ -1,0 +1,34 @@
+{
+    "usine": {
+      "condition2": 3,
+      "condition3": 2,
+      "condition4": 0.5,
+      "condition5": 3,
+      "condition6": 1.1,
+      "condition7": 1.1,
+      "condition8": 1,
+      "condition9": 0.05,
+      "condition10": 5,
+      "condition11": 1,
+      "condition13": 60,
+      "condition14": 5,
+      "condition15": 15,
+      "condition16": 1
+    },
+    "perso": {
+      "condition2": 3,
+      "condition3": 2,
+      "condition4": 0.5,
+      "condition5": 3,
+      "condition6": 1.1,
+      "condition7": 1.1,
+      "condition8": 1,
+      "condition9": 0.05,
+      "condition10": 15,
+      "condition11": 1,
+      "condition13": 60,
+      "condition14": 5,
+      "condition15": 15,
+      "condition16": 1
+    }
+  }  

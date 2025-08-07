@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Electron</title>
+  <link rel="stylesheet" href="src/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="src/main.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">
+        <img class="logo-img" src="assets/icon_maqh_white.png" alt="Logo MAQH">
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" class="active">🏠 Home</a></li>
+          <li><a href="#evaluation" id="evaluation-link">📊 Évaluation</a></li>
+          <li><a href="#">💰 Valeur intrinsèque</a></li>
+          <li><a href="#">📂 Ton Portfolio</a></li>
+        </ul>
+      </nav>
+      <div class="settings-section">
+        <hr>
+        <ul class="settings-list">
+          <li><a href="#" class="settings-btn">⚙️ Paramètres</a></li>
+        </ul>
+        
+        <!-- ✅ Zone du bouton + formulaire de connexion -->
+        <div class="login-area">
+          <button id="login">Log In</button>
+    
+          <!-- ✅ Formulaire de connexion caché -->
+          <div id="login-form" style="display: none; flex-direction: column; gap: 5px; margin-top: 10px;">
+            <input type="email" id="login-email" placeholder="Email" style="padding: 6px; border-radius: 5px;" />
+            <input type="password" id="login-password" placeholder="Mot de passe" style="padding: 6px; border-radius: 5px;" />
+            <button id="submit-login" style="margin-top: 5px;">Se connecter</button>
+          </div>
+        </div>
+    
+        <!-- ✅ Infos utilisateur affichées après connexion -->
+        <div class="user-info" id="user-profile" style="display: none;">
+          <p class="user-name">Name</p>
+          <p class="user-mail">mail@google.com</p>
+        </div>
+      </div>
+    
+      <div class="resizer" id="resizer"></div>
+    </aside>
+    
+    <button id="sidebar-toggle" title="Afficher la sidebar">☰</button>
+
+    <main class="content-wrapper">
+
+      <div id="top-bar-global">
+        <div class="search-container-global">
+          <!-- input + raccourci clavier -->
+          <input
+            type="text"
+            id="globalSearchInput"
+            placeholder="Rechercher Valeurs (⌘ K)…    Filtre (/)"
+            autocomplete="off"
+          />
+
+        </div>
+
+        <!-- barre des filtres actifs (les petits « chips ») -->
+        <div id="filter-bar" class="filter-bar"></div>
+      </div>
+      
+    
+      <div class="scroll-wrapper">
+        <!-- Home Section -->
+        <section id="home-view" class="view-section">
+          <div class="top-bar">
+            <div class="period-buttons">
+              <button class="period-btn active" data-period="5d">5J</button>
+              <button class="period-btn" data-period="1mo">1M</button>
+              <button class="period-btn" data-period="3mo">3M</button>
+              <button class="period-btn" data-period="6mo">6M</button>
+              <button class="period-btn" data-period="1y">1Y</button>
+              <button class="period-btn" data-period="5y">5Y</button>
+              <button class="period-btn" data-period="max">MAX</button>
+            </div>
+          </div>
+          <div id="grid-container" class="grid"></div>
+          <div id="pagination" class="pagination"></div>
+        </section>
+    
+        <!-- Evaluation Section -->
+        <section id="evaluation-view" class="view-section">
+          <!-- ⚠️ Le contenu sera injecté dynamiquement ici -->
+        </section>
+      </div> <!-- ✅ Fermeture de .scroll-wrapper -->
+      <div id="user-modal" class="modal">
+        <div class="modal-content">
+          <h2>Compte utilisateur</h2>
+          <p><strong>Nom :</strong> <span id="modal-username">Utilisateur</span></p>
+          <p><strong>Email :</strong> <span id="modal-useremail">email@example.com</span></p>
+          <hr>
+          <button id="update-data-btn">🔄 Mettre à jour les données locales</button>
+          <button id="reset-password-btn">🔒 Réinitialiser le mot de passe</button>
+          <button id="logout-btn">🚪 Déconnexion</button>
+          <button id="close-user-modal">❌ Fermer</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  
+
+</body>
+</html>

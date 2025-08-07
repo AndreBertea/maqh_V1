@@ -1,0 +1,80 @@
+
+partie home: 
+
+
+
+partie evaluation: 
+ok parfait a present nous allons devoir nous concentré sur la suite de l'application car nous avons le menu evaluation dans la side bar qui ne propose encore aucune intéraction et nous allons devoir changer dynamiquement d'interface utilisateur, la barre de recherche devra resté a son emplacement et garder les meme fonctionnalité mais les card seront remplacé par des tableaux qui seront dynamique lors du survol, nous afficher les données nous allons avoir besoin 
+
+_____________
+
+ok mon objectifs serai de crée a partir de ces fichiers,  2 nouvelles fonctionnalités que je possèdait dans mon ancien projet sous le nom de deux autre fichier un ui.js et l'autre conditions.js, commencont par la premiere :
+la première serai a partir du fichier ui.js avoir  la possibilité de pouvoir clique sur une card et lors du clic on display le fichier Json correspondant a la card selectionné. 
+la seconde serai a partir du fichier condition.js qui lui viens lire le fichier data/companies/euronext/{symbol}.json et va crée tout un tas de conf
+ditions a respecter pour afficher une notation. 
+
+_____________
+ancien projet: 
+.
+├── data/
+│   ├── companies/
+│   │   └── euronext/
+│   ├── EuronextParis_Excel/
+│   └── resources/
+│       └── archi/
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   ├── api.js
+│   │   ├── conditions.js
+│   │   ├── main.js
+│   │   ├── ui.js
+│   │   └── utils.js
+│   └── templates/
+│       └── index.html
+├── venv/
+├── .app.py.swp
+├── app.py
+└── FULL_EURONEXT_actions.csv
+
+le projet precedent nommé V0 fonctionnait via la reception de donnée d'une api alors que pour le projet actuel V1 les données seront toutes stocker en local
+
+nouveau projet :
+maqh/
+├── package.json                # Le fichier de configuration principal pour npm et electron-builder.
+├── main.js                     # Le script du processus principal (main process) d'Electron. C'est ici que vous créez la fenêtre principale.
+├── index.html                  # La page HTML d'entrée de votre application.
+├── data/                       # Dossier contenant vos fichiers de données.
+│   ├── EURONEXT_actions.csv
+    ├──companies/euronext/
+    │   ├──ALDOL.json
+    │   └── ...
+│   └── yahoo_api/              # Dossier regroupant les fichiers JSON pour chaque symbole.
+│       ├── ALDOL.json          # Exemple de fichier JSON pour le symbole ALDOL.
+│       ├── MLDYX.json          # Exemple de fichier JSON pour le symbole MLDYX.
+│       └── ...                 # Autres fichiers JSON.
+├── config/                     # (Optionnel en développement) Dossier pour stocker la configuration locale.
+│   └── config.json             # Fichier de configuration initial (en développement, sinon en runtime, ce fichier sera créé dans le dossier userData de l'utilisateur).
+└── src/                        # Dossier regroupant l'ensemble des scripts du renderer et autres modules JavaScript.
+    ├── main.js                 # Point d'entrée du renderer, qui importe et initialise les modules (grid, sidebar, parametre, etc.).
+    ├── grid.js                 # Module qui gère l'affichage des cartes, la pagination, la recherche, et l'actualisation en fonction de la configuration.
+    ├── sidebar.js              # Module qui gère le comportement et le redimensionnement de la sidebar.
+    ├── parametre.js            # Module qui affiche le modal de paramètres (curseur pour le nombre de cartes, sélection de période, etc.) et qui gère la sauvegarde de la config.
+    ├── config.js               # Module qui lit et écrit le fichier de configuration dans un dossier accessible (par exemple dans userData via app.getPath('userData')).
+    ├── utils.js                # Module utilitaire (exemple : parsing du CSV, fonctions de formatage, etc.).
+    └── api.js                  # (Optionnel) Module pour gérer les appels à des APIs externes ou à votre backend.
+
+______
+
+
+Fichier bash devrai ressembler a qqch comme : 
+
+git clone https://github.com/AndreBertea/maqh.git
+cd maqh
+npm install    # ← installe toutes les dépendances
+npm start      # ← lance l’app Electron (grâce au script dans package.json)
+
+# a finaliser avec l'ajout des données firebase
+_______
+
