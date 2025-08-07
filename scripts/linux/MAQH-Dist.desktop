@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=MAQH Dist
+Comment=Construire MAQH (dist installable)
+Exec=bash -lc '"$(dirname "%k")/MAQH-Dist.sh"'
+Icon=utilities-terminal
+Terminal=true
+Categories=Development;
+
+

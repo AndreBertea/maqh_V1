@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=MAQH Pack
+Comment=Construire MAQH (pack)
+Exec=bash -lc '"$(dirname "%k")/MAQH-Pack.sh"'
+Icon=utilities-terminal
+Terminal=true
+Categories=Development;
+
+

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=MAQH Dev
+Comment=Lancer MAQH en mode développement
+Exec=bash -lc '"$(dirname "%k")/MAQH-Dev.sh"'
+Icon=utilities-terminal
+Terminal=true
+Categories=Development;
+
+
