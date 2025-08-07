@@ -85,10 +85,12 @@ async function fetchData() {
 
           /* --- NOTE (/20) pour le filtre /note ------------------------ */
           try {
-            const company = await fetch(
-              `data/companies/euronext/${encodeURIComponent(card.Name)}.json`
-            ).then((r) => r.json());
-
+            let company = window.fileStorage?.readCompanyJSON?.(card.Name);
+            if (!company) {
+              company = await fetch(
+                `data/companies/euronext/${encodeURIComponent(card.Name)}.json`
+              ).then((r) => r.json());
+            }
             const results = await evaluateConditions(company); // [{note, …}]
             const total = results.reduce((sum, r) => sum + r.note, 0);
             card.note = (total / results.length) * 20; // ex. 14.27

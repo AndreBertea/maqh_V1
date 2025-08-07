@@ -1,3 +1,103 @@
+# MAQH – Application d’analyse et de notation d’actions (Electron)
+
+MAQH est une application de bureau multiplateforme (macOS, Windows, Linux) construite avec Electron. Elle permet d’analyser et de noter des actions à partir de données distantes (Firestore/Firebase) synchronisées en local. L’interface offre une grille, une table d’évaluation/notation, des modales détaillées et des graphiques.
+
+## Objectifs
+- Récupérer les données de la BDD distante (Firestore) et les stocker localement pour un usage offline.
+- Visualiser un univers d’actions (Euronext) avec recherche et filtres.
+- Calculer une notation sur la base de conditions configurables.
+- Ouvrir une fiche détaillée par valeur avec plusieurs onglets (Cours, Notation, Détail, etc.).
+
+## Fonctionnalités principales
+- Authentification Firebase (email/mot de passe).
+- Synchronisation des sociétés Firestore → stockage local utilisateur.
+- Grille d’actions avec pagination, mini‐graphes, variations par période (5J → MAX).
+- Barre de recherche globale avec palette de commandes et filtres (secteur, note minimale).
+- Table d’évaluation avec tri des notes et accès direct aux cartes.
+- Fiche détaillée (modale) avec onglets « Cours », « Notation », « Détail ».
+- Configuration des conditions de notation (fichier `config/configNotation.json` recopié dans l’espace utilisateur et modifiable).
+
+## Prérequis
+- Node.js ≥ 18
+- npm ≥ 9
+- Accès internet (Firebase + CDN Chart.js si non packagé autrement)
+
+## Installation (développement)
+1. Cloner le dépôt
+2. Installer les dépendances
+
+```bash
+npm install
+```
+
+3. Démarrer l’application
+
+```bash
+npm start
+```
+
+Au premier lancement, ouvrez le panneau utilisateur (icône en haut à droite) pour vous connecter. Une fois connecté, utilisez le bouton « Mettre à jour les données locales » pour synchroniser les sociétés Firestore en local.
+
+## Build (packaging)
+Crée les artefacts pour votre OS via electron-builder.
+
+```bash
+# dossier dist/
+npm run pack   # build non installable (dir)
+npm run dist   # build installable (dmg/nsis/appimage selon l’OS)
+```
+
+Le binaire installé utilisera le stockage de l’utilisateur pour les données (et non les fichiers packagés en lecture seule).
+
+## Structure des données
+- Données packagées (lecture seule) – utiles comme repli initial:
+  - `data/` (CSV Euronext, données Yahoo API par symbole, éventuels JSON de sociétés)
+- Données utilisateur (lecture/écriture) – synchronisation Firestore:
+  - macOS: `~/ .maqh_data/companies/euronext/*.json`
+  - Windows/Linux: un dossier `~/.maqh_data/companies/euronext/*.json` est également utilisé
+  - Accès via l’API preload `window.fileStorage`:
+    - `saveJSON(name, data)`
+    - `readCompanyJSON(name)`
+
+## Firebase (client)
+L’app initialise Firebase (App, Auth, Firestore) côté renderer via le SDK web et effectue la synchronisation par lots:
+- Connexion → bouton « Mettre à jour les données locales » appelle `fetchUserData()`
+- Pagination Firestore par ordre sur le champ `Name`.
+- Écriture locale par nom de société (nom de fichier nettoyé, un JSON par société).
+
+Paramètres Firebase: voir `src/main.js` pour l’initialisation du SDK.
+
+## Configuration utilisateur
+Une copie des fichiers de configuration « usine » est effectuée la première fois dans un espace utilisateur dédié:
+- `config/config.json` → préférences UI: cards/page, période courante, etc.
+- `config/configNotation.json` → paramètres des conditions de notation
+- Accès via `window.configAPI` (preload):
+  - `loadConfig()`, `saveConfig(config)`
+  - `loadNotationConfig()`, `saveNotationConfig(config)`
+  - `resetToFactoryConfig()`
+
+## Flux de données « lecture »
+- La grille et la notation tentent d’abord de lire le JSON société en local via `window.fileStorage.readCompanyJSON(name)`
+- Si introuvable (avant première sync), repli sur `data/companies/euronext/{Name}.json` (fichiers packagés)
+
+## Dépannage
+- « Fichier introuvable » dans la modale
+  - Synchronisez d’abord les données (bouton « Mettre à jour les données locales »)
+  - Sinon, vérifiez que le nom de la société correspond bien à un fichier dans `data/companies/euronext` (repli)
+- « Chart is not defined »
+  - Vérifiez l’accès réseau à `cdn.jsdelivr.net`. En alternative, vous pouvez installer Chart.js via npm et l’importer sans CDN.
+- IndexedDB/Quota/LOCK (logs Chromium)
+  - Benin: relancer l’application. Ces messages n’affectent pas l’usage normal.
+- Preload / accès disque (fs)
+  - En dev, le preload a accès à `fs`. Pour un durcissement supplémentaire, il est possible de déplacer l’I/O disque côté process principal via IPC sécurisé (à planifier si nécessaire).
+
+## Scripts npm
+- `npm start` – lance Electron en dev
+- `npm run pack` – build non installable
+- `npm run dist` – build installable (dist/)
+
+## Licence
+MIT (à adapter au besoin)
 
 ```
 maqh_V1

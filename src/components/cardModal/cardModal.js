@@ -1,11 +1,13 @@
 export async function openCardModal(card) {
   try {
-    const fileName = encodeURIComponent(card.Name.trim()) + ".json";
-    const url = `data/companies/euronext/${fileName}`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Fichier introuvable");
-
-    const data = await response.json();
+    let data = window.fileStorage?.readCompanyJSON?.(card.Name.trim());
+    if (!data) {
+      const fileName = encodeURIComponent(card.Name.trim()) + ".json";
+      const url = `data/companies/euronext/${fileName}`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error("Fichier introuvable");
+      data = await resp.json();
+    }
     window.__lastOpenedCard = card;
 
     const overlay = document.createElement("div");

@@ -80,18 +80,38 @@ console.log("✅ configAPI exposé !");
 
 // === Partie FILE STORAGE API ===
 
-// 📁 Écriture des données dans le projet directement
-const projectRoot = path.join(__dirname, ".."); // => /Users/andrebertea/Projects/maqh_V1
-const dataRoot = path.join(projectRoot, "data", "BDD", "euronext");
+// 📁 Stockage de données dans le dossier utilisateur (userData) pour la prod
+function sanitizeFileName(name) {
+  return String(name)
+    .replace(/[/\\?%*:|"<>]/g, "_")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const userDataRoot = path.join(os.homedir(), ".maqh_data");
+const companiesRoot = path.join(userDataRoot, "companies", "euronext");
 
 contextBridge.exposeInMainWorld("fileStorage", {
   saveJSON: (name, data) => {
-    if (!fs.existsSync(dataRoot)) {
-      fs.mkdirSync(dataRoot, { recursive: true });
+    const safe = sanitizeFileName(name);
+    if (!fs.existsSync(companiesRoot)) {
+      fs.mkdirSync(companiesRoot, { recursive: true });
     }
-    const filePath = path.join(dataRoot, `${name}.json`);
+    const filePath = path.join(companiesRoot, `${safe}.json`);
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
-  }
+  },
+  readCompanyJSON: (name) => {
+    try {
+      const safe = sanitizeFileName(name);
+      const filePath = path.join(companiesRoot, `${safe}.json`);
+      if (!fs.existsSync(filePath)) return null;
+      return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    } catch (e) {
+      console.error("readCompanyJSON error:", e);
+      return null;
+    }
+  },
+  getCompaniesFolder: () => companiesRoot,
 });
 
 console.log("✅ fileStorage exposé !");

@@ -138,8 +138,13 @@ export async function renderEvaluationTable() {
 
   async function computeScore20(name){
     try{
-      const url=`data/companies/euronext/${encodeURIComponent(name)}.json`;
-      const data=await fetch(url).then(r=>r.json());
+      let data = window.fileStorage?.readCompanyJSON?.(name);
+      if (!data) {
+        const url=`data/companies/euronext/${encodeURIComponent(name)}.json`;
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error("no local data");
+        data = await resp.json();
+      }
       const res =await evaluateConditions(data);
       const tot =res.reduce((s,x)=>s+x.note,0);
       return ((tot/res.length)*20).toFixed(2);
