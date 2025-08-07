@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# macOS : exiger les CLT avant d'aller plus loin
+if [[ "$(uname)" == "Darwin" ]]; then
+  if ! xcode-select -p >/dev/null 2>&1; then
+    echo "[MAQH] Outils Apple absents. Lancement de l'installation..."
+    xcode-select --install || true
+    echo "[MAQH] Installe les 'Command Line Tools', puis relance le script."
+    exit 1
+  fi
+fi
+
 REPO_URL="${REPO_URL:-https://github.com/AndreBertea/maqh_V1.git}"
 BRANCH="${BRANCH:-main}"
 CMD="start"  # start | pack | dist
@@ -18,8 +28,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 case "$(uname)" in
-  Darwin) TARGET_DIR="${TARGET_DIR:-$HOME/Library/Application Support/MAQH/app}" ;;
-  Linux)  TARGET_DIR="${TARGET_DIR:-$HOME/.local/share/MAQH/app}" ;;
+  Darwin) TARGET_DIR="${TARGET_DIR:-$HOME/MAQH/app}" ;;
+  Linux)  TARGET_DIR="${TARGET_DIR:-$HOME/MAQH/app}" ;;
   *)      TARGET_DIR="${TARGET_DIR:-$HOME/MAQH_V1}" ;;
 esac
 echo "[MAQH] Répertoire: $TARGET_DIR"
