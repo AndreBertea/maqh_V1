@@ -49,6 +49,20 @@ npm run dist   # build installable (dmg/nsis/appimage selon l’OS)
 
 Le binaire installé utilisera le stockage de l’utilisateur pour les données (et non les fichiers packagés en lecture seule).
 
+### Installation « 1‑clic » (scripts)
+- macOS/Linux:
+  ```bash
+  bash ./scripts/setup.sh --start         # démarrer en dev
+  bash ./scripts/setup.sh --pack          # build non installable
+  bash ./scripts/setup.sh --dist          # build installable
+  ```
+- Windows (PowerShell):
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1 -Cmd start   # démarrer en dev
+  powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1 -Cmd pack    # build non installable
+  powershell -ExecutionPolicy Bypass -File .\scripts\setup.ps1 -Cmd dist    # build installable
+  ```
+
 ## Structure des données
 - Données packagées (lecture seule) – utiles comme repli initial:
   - `data/` (CSV Euronext, données Yahoo API par symbole, éventuels JSON de sociétés)
