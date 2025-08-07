@@ -15,12 +15,11 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https:/
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 // import { initializeFirestore } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDOPYkBDNV4kdBZJus2vDyQTkrTpq-SfF8",
-  authDomain: "maqh-mbcp.firebaseapp.com",
-  projectId: "maqh-mbcp",
-  appId: "1:187621665125:web:31edd2636435fdc200598c"
-};
+// Charger la config Firebase via l'API de preload (fichier ~/.maqh_config/config/firebase.json)
+const firebaseConfig = (typeof window !== 'undefined' && window.firebaseConfigAPI?.getFirebaseConfig?.()) || null;
+if (!firebaseConfig || !firebaseConfig.apiKey) {
+  console.error("Configuration Firebase manquante. Veuillez renseigner ~/.maqh_config/config/firebase.json");
+}
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

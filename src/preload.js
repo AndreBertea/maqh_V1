@@ -14,8 +14,10 @@ const configDir = path.join(userDataPath, "config");
 const usineConfigDir = path.join(__dirname, "..", "config");
 const usineConfigFile = path.join(usineConfigDir, "config.json");
 const usineNotationFile = path.join(usineConfigDir, "configNotation.json");
+const usineFirebaseFile = path.join(usineConfigDir, "firebase.example.json");
 const configFile = path.join(configDir, "config.json");
 const notationConfigFile = path.join(configDir, "configNotation.json");
+const firebaseConfigFile = path.join(configDir, "firebase.json");
 
 const defaultConfig = {
   cardsPerPage: 10,
@@ -115,3 +117,33 @@ contextBridge.exposeInMainWorld("fileStorage", {
 });
 
 console.log("✅ fileStorage exposé !");
+
+// === Partie Firebase CONFIG ===
+// Exposer une API pour lire la config Firebase depuis ~/.maqh_config/config/firebase.json
+// Si absente, on copie l'exemple depuis le dossier config de l'app
+contextBridge.exposeInMainWorld("firebaseConfigAPI", {
+  getFirebaseConfig: () => {
+    // Fichier d'exemple → fichier utilisateur si manquant
+    copyIfMissing(usineFirebaseFile, firebaseConfigFile, JSON.stringify({
+      apiKey: "",
+      authDomain: "",
+      projectId: "",
+      appId: ""
+    }));
+    try {
+      return JSON.parse(fs.readFileSync(firebaseConfigFile, "utf-8"));
+    } catch (e) {
+      console.error("Erreur lecture firebase.json:", e);
+      return null;
+    }
+  },
+  saveFirebaseConfig: (cfg) => {
+    try {
+      if (!fs.existsSync(configDir)) fs.mkdirSync(configDir, { recursive: true });
+      fs.writeFileSync(firebaseConfigFile, JSON.stringify(cfg, null, 2), "utf-8");
+    } catch (e) {
+      console.error("Erreur écriture firebase.json:", e);
+    }
+  }
+});
+console.log("✅ firebaseConfigAPI exposé !");

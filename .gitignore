@@ -5,6 +5,11 @@ __pycache__/
 *.pyc
 .DS_Store
 
+# Secrets / config locaux
+.env
+config/firebase.json
+.maqh_config/
+
 # Data : tout ignorer par défaut…
 data/
 
